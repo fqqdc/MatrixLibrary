@@ -8,14 +8,17 @@ namespace MatrixLibrary
     {
         static void Main(string[] args)
         {
-            var v2 = new Vector<double>(1, 1);
+            var v2 = new Vector<float>(1, 1);
             Console.WriteLine(v2.GetLength());
+            Console.WriteLine(v2.Normal());
 
-            var v3 = new Vector<double>(1, 1, 1);
+            var v3 = new Vector<float>(1, 1, 1);
             Console.WriteLine(v3.GetLength());
+            Console.WriteLine(v3.Normal());
 
-            var v4 = new Vector<double>(1, 0, 0, 1);
+            var v4 = new Vector<float>(1, 1, 1, 1);
             Console.WriteLine(v4.GetLength());
+            Console.WriteLine(v4.Normal());
         }
     }
 }

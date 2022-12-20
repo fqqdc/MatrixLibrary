@@ -18,6 +18,16 @@ namespace MatrixLibrary
 
             return new Vector<T>(newValue);
         }
+        public static Vector<T> operator /(Vector<T> vector, T scalar)
+        {
+            var newValue = vector.Values.ToArray();
+            for (int i = 0; i < newValue.Length; i++)
+            {
+                newValue[i] /= scalar;
+            }
+
+            return new Vector<T>(newValue);
+        }
 
         public static Vector<T> operator +(Vector<T> vector1, Vector<T> vector2)
         {
