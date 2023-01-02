@@ -4,21 +4,38 @@ using System.Runtime.CompilerServices;
 
 namespace MatrixLibrary
 {
+    class Vector3F : Vector<float>
+    {
+        public Vector3F(float v) : base(v, v, v) { }
+        public Vector3F(float v1, float v2, float v3) : base(v1,v2,v3) { }
+
+        public static implicit operator Vector3F(float value)
+        {
+            return new Vector3F(value);
+        }
+
+        public static implicit operator Vector3F(ValueTuple<float> values)
+        {
+            return new Vector3F(values.Item1);
+        }
+
+        public static implicit operator Vector3F(ValueTuple<float, float, float> values)
+        {
+            return new Vector3F(values.Item1, values.Item2, values.Item3);
+        }
+    }
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            var v2 = new Vector<float>(1, 1);
-            Console.WriteLine(v2.GetLength());
-            Console.WriteLine(v2.Normal());
+            Vector3F v = (1, 2, 3);
+            Console.WriteLine(v);
 
-            var v3 = new Vector<float>(1, 1, 1);
-            Console.WriteLine(v3.GetLength());
-            Console.WriteLine(v3.Normal());
+            Matrix<int> m = new((1, 2), (2, 3), (3, 4));
+            Console.WriteLine(m);
 
-            var v4 = new Vector<float>(1, 1, 1, 1);
-            Console.WriteLine(v4.GetLength());
-            Console.WriteLine(v4.Normal());
+            Console.WriteLine(m.ToMultilineString());
         }
     }
 }

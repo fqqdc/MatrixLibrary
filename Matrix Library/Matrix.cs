@@ -31,7 +31,7 @@ namespace MatrixLibrary
             this.values = (Vector<T>[])values.Clone();
         }
 
-        public override string ToString()
+        public string ToMultilineString ()
         {
             const string TAG = "M";
 
@@ -71,6 +71,11 @@ namespace MatrixLibrary
             }
 
             return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"[ {string.Join(", ", (object[])values)} ]";
         }
     }
 }

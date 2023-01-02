@@ -61,6 +61,31 @@ namespace MatrixLibrary
             return vector1 + (-vector2);
         }
 
+        public static implicit operator Vector<T>(T value)
+        {
+            return new Vector<T>(value);
+        }
+
+        public static implicit operator Vector<T>(ValueTuple<T> value)
+        {
+            return new Vector<T>(value.Item1);
+        }
+
+        public static implicit operator Vector<T>(ValueTuple<T, T> value)
+        {
+            return new Vector<T>(value.Item1, value.Item2);
+        }
+
+        public static implicit operator Vector<T>(ValueTuple<T, T, T> value)
+        {
+            return new Vector<T>(value.Item1, value.Item2, value.Item3);
+        }
+
+        public static implicit operator Vector<T>(ValueTuple<T, T, T, T> value)
+        {
+            return new Vector<T>(value.Item1, value.Item2, value.Item3, value.Item4);
+        }
+
         public static Vector<T> GetZero(int dimension)
         {
             T[] values = new T[dimension];
