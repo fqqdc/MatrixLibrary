@@ -6,15 +6,15 @@ using System.Numerics;
 
 namespace MatrixLibrary
 {
-    public partial class Vector<T> where T : INumberBase<T>
+    public partial class Vector<T>
     {
         private T[] values;
-        public IReadOnlyList<T> Values
+        public IEnumerable<T> Values
         {
-            get { return new ReadOnlyCollection<T>(values); }
+            get => values.ToArray();
         }
 
-        public T this[int index] { get => values[index]; }
+        public ref T this[int index] { get => ref values[index]; }
 
         public int Dimension { get => values.Length; }
 

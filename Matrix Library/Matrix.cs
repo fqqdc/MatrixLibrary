@@ -7,75 +7,47 @@ using System.Text;
 
 namespace MatrixLibrary
 {
-    public partial class Matrix<T> where T : INumberBase<T>
+    public partial class Matrix<T>
     {
-        private Vector<T>[] values;
-        public IReadOnlyList<Vector<T>> Values
+        private int vectorDimension;
+        private int vectorCount;
+        private T[] values;
+
+        public IEnumerable<Vector<T>> Vectors
         {
-            get { return new ReadOnlyCollection<Vector<T>>(values); }
+            get
+            {
+                for (int i = 0; i < vectorCount; i++)
+                {
+                    yield return this[i];
+                }
+            }
         }
 
-        public Vector<T> this[int index] { get => values[index]; }
+        public Vector<T> this[int index] { get => new(values[(index * vectorDimension)..(index * vectorDimension + vectorDimension)]); }
+        public ref T this[int row, int col] { get => ref values[row * vectorDimension + col]; }
 
         public int VectorCount { get => values.Length; }
 
-        public Matrix(params Vector<T>[] values)
+        public Matrix(params Vector<T>[] vectors)
         {
-            if (values.Length == 0)
-                throw new ArgumentException($"{nameof(values)}中的向量数量为零。矩阵中的向量数量不能为零。");
+            if (vectors.Length == 0)
+                throw new ArgumentException($"{nameof(vectors)}中的向量数量为零。矩阵中的向量数量不能为零。");
 
-            int dimension = values[0].Dimension;
-            if (values.Any(value => value.Dimension != dimension))
-                throw new ArgumentException($"{nameof(values)}中的向量维度必须相等。");
+            int dimension = vectors[0].Dimension;
+            if (vectors.Any(value => value.Dimension != dimension))
+                throw new ArgumentException($"{nameof(vectors)}中的向量维度必须相等。");
 
-            this.values = (Vector<T>[])values.Clone();
-        }
-
-        public string ToMultilineString ()
-        {
-            const string TAG = "M";
-
-            StringBuilder sb = new();
-
-            int nVector = values.Length;
-            int nScalar = values[0].Dimension;
-
-            int[] maxScalarLength = new int[nVector];
-            for (int i = 0; i < nVector; i++)
-            {
-                for (int j = 0; j < nScalar; j++)
-                {
-                    maxScalarLength[i] = Math.Max(maxScalarLength[i], (this[i][j].ToString() ?? string.Empty).Length);
-                }
-            }
-
-            for (int i = 0; i < nScalar; i++)
-            {
-                for (int j = 0; j < nVector; j++)
-                {
-                    if (j == 0)
-                    {
-                        if (i == 0) sb.Append(TAG);
-                        else sb.Append("".PadLeft(TAG.Length));
-
-                        sb.Append("|");
-                    }
-                    else sb.Append(" ");
-
-                    string strScalar = (this[j][i].ToString() ?? string.Empty)
-                        .PadRight(maxScalarLength[j]);
-                    sb.Append(strScalar);
-                }
-                sb.Append("|");
-                if (i < nScalar - 1) sb.AppendLine();
-            }
-
-            return sb.ToString();
+            vectorDimension = dimension;
+            vectorCount = vectors.Length;
+            values = new T[dimension * vectorCount];
+            for (int i = 0; i < vectorCount; i++)
+                Array.Copy(vectors[i].Values.ToArray(), 0, values, i * dimension, dimension);
         }
 
         public override string ToString()
         {
-            return $"[ {string.Join(", ", (object[])values)} ]";
+            return $"[ {string.Join(", ", Vectors)} ]";
         }
     }
 }

@@ -11,13 +11,13 @@ namespace MatrixLibrary
     {
         public static Matrix<T> operator *(Matrix<T> matrix, T scalar)
         {
-            var newValue = matrix.Values.ToArray();
-            for (int i = 0; i < newValue.Length; i++)
+            var vectors = matrix.Vectors.ToArray();
+            for (int i = 0; i < vectors.Length; i++)
             {
-                newValue[i] *= scalar;
+                vectors[i] *= scalar;
             }
 
-            return new Matrix<T>(newValue);
+            return new Matrix<T>(vectors);
         }
 
         public static Matrix<T> operator *(Matrix<T> matrix1, Matrix<T> matrix2)
@@ -86,6 +86,13 @@ namespace MatrixLibrary
         public static Matrix<T> operator -(Matrix<T> matrix1, Matrix<T> matrix2)
         {
             return matrix1 + (-matrix2);
+        }
+
+        public static Matrix<T> GetZero(int dimension)
+        {
+            Vector<T>[] vectors = new Vector<T>[dimension];
+            Array.Fill(vectors, Vector<T>.GetZero(dimension));
+            return new(vectors);
         }
 
         public static Matrix<T> GetIdentity(int dimension)

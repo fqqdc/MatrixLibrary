@@ -1,41 +1,24 @@
 ﻿using System;
 using System.Collections;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using Vector3F = MatrixLibrary.Vector3<float>;
 
 namespace MatrixLibrary
 {
-    class Vector3F : Vector<float>
-    {
-        public Vector3F(float v) : base(v, v, v) { }
-        public Vector3F(float v1, float v2, float v3) : base(v1,v2,v3) { }
-
-        public static implicit operator Vector3F(float value)
-        {
-            return new Vector3F(value);
-        }
-
-        public static implicit operator Vector3F(ValueTuple<float> values)
-        {
-            return new Vector3F(values.Item1);
-        }
-
-        public static implicit operator Vector3F(ValueTuple<float, float, float> values)
-        {
-            return new Vector3F(values.Item1, values.Item2, values.Item3);
-        }
-    }
-
     internal class Program
     {
         static void Main(string[] args)
         {
-            Vector3F v = (1, 2, 3);
-            Console.WriteLine(v);
+            Vector3F v1 = (1.7f, 2, 3), v2 = (4, 5, 6.8f);
 
-            Matrix<int> m = new((1, 2), (2, 3), (3, 4));
-            Console.WriteLine(m);
+            Vector3 v31 = new(1.7f, 2, 3), v32 = new(4, 5, 6.8f);
 
-            Console.WriteLine(m.ToMultilineString());
+            Console.WriteLine(v1.Cross(v2));
+            Console.WriteLine(Vector3.Cross(v31, v32));
+
+            Console.WriteLine(v2.Cross(v1));
+            Console.WriteLine(Vector3.Cross(v32, v31));
         }
     }
 }

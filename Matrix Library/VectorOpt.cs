@@ -6,7 +6,8 @@ using System.Numerics;
 
 namespace MatrixLibrary
 {
-    public partial class Vector<T> where T : INumberBase<T>
+    public partial class Vector<T>
+        where T : INumberBase<T>
     {
         public static Vector<T> operator *(Vector<T> vector, T scalar)
         {
@@ -59,11 +60,6 @@ namespace MatrixLibrary
         public static Vector<T> operator -(Vector<T> vector1, Vector<T> vector2)
         {
             return vector1 + (-vector2);
-        }
-
-        public static implicit operator Vector<T>(T value)
-        {
-            return new Vector<T>(value);
         }
 
         public static implicit operator Vector<T>(ValueTuple<T> value)
