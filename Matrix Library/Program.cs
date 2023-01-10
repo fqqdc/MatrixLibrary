@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using Vector3F = MatrixLibrary.Vector3<float>;
+using Vector2i = MatrixLibrary.Vector2<int>;
+
 
 namespace MatrixLibrary
 {
@@ -10,15 +8,12 @@ namespace MatrixLibrary
     {
         static void Main(string[] args)
         {
-            Vector3F v1 = (1.7f, 2, 3), v2 = (4, 5, 6.8f);
+            Matrix<int> m1 = new((1, 3), (2, 4));
+            Matrix<int> m2 = new((6, 8), (7, 9));
 
-            Vector3 v31 = new(1.7f, 2, 3), v32 = new(4, 5, 6.8f);
-
-            Console.WriteLine(v1.Cross(v2));
-            Console.WriteLine(Vector3.Cross(v31, v32));
-
-            Console.WriteLine(v2.Cross(v1));
-            Console.WriteLine(Vector3.Cross(v32, v31));
+            Console.WriteLine(m1);
+            Console.WriteLine(m2);
+            Console.WriteLine(m1 * m2);
         }
     }
 }

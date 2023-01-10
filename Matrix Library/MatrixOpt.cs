@@ -39,7 +39,7 @@ namespace MatrixLibrary
                 for (int m1VectorIndex = 0; m1VectorIndex < matrix1.VectorCount; m1VectorIndex++)
                 {
                     //矩阵2向量中的每一个标量对应矩阵1的向量，并且与之乘积
-                    var v = matrix1[m1VectorIndex] * matrix2[m2VectorIndex][m1VectorIndex];
+                    var v = matrix1[m1VectorIndex] * matrix2[row: m1VectorIndex, col: m2VectorIndex];
                     //结果矩阵中的向量等于乘积之和
                     resultVectors[m2VectorIndex] += v;
                 }

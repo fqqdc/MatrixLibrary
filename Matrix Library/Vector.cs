@@ -11,7 +11,7 @@ namespace MatrixLibrary
         private T[] values;
         public IEnumerable<T> Values
         {
-            get => values.ToArray();
+            get => values;
         }
 
         public ref T this[int index] { get => ref values[index]; }

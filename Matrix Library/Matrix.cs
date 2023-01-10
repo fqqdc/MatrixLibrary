@@ -25,9 +25,9 @@ namespace MatrixLibrary
         }
 
         public Vector<T> this[int index] { get => new(values[(index * vectorDimension)..(index * vectorDimension + vectorDimension)]); }
-        public ref T this[int row, int col] { get => ref values[row * vectorDimension + col]; }
+        public ref T this[int row, int col] { get => ref values[col * vectorDimension + row]; }
 
-        public int VectorCount { get => values.Length; }
+        public int VectorCount { get => vectorCount; }
 
         public Matrix(params Vector<T>[] vectors)
         {
