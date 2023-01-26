@@ -1,24 +1,59 @@
 ﻿using System.Linq;
 using System;
 using System.Numerics;
+using System.Runtime.Intrinsics;
 
 namespace MatrixLibrary
 {
     public static class MatixExtension
     {
-        public static Matrix<T> TransposeMatrix<T>(this Matrix<T> matrix) where T : INumberBase<T>
+        public static Matrix<T> Transpose<T>(this Matrix<T> matrix) where T : INumberBase<T>
         {
-            Vector<T>[] newVectors = new Vector<T>[matrix[0].Dimension];
-            for (int i = 0; i < newVectors.Length; i++)
+            Matrix<T> result = new(matrix.VectorCount, matrix.VectorDimension);
+            for (int y = 0; y < matrix.VectorCount; y++)
             {
-                T[] scalars =  new T[matrix.VectorCount];
-                for (int j = 0; j < matrix.VectorCount; j++)
+                for (int x = 0; x < matrix.VectorDimension; x++)
                 {
-                    scalars[j] = matrix[j][i];
+                    result[y, x] = matrix[x, y];
                 }
-                newVectors[i] = new(scalars);
             }
-            return new(newVectors);
+            return result;
+        }
+
+        public static bool Invert<T>(this Matrix<T> matrix, out Matrix<T> result) where T : INumberBase<T>
+        {
+            if (matrix.VectorCount != matrix.VectorDimension)
+                throw new ArgumentException($"{nameof(matrix)}矩阵不是方阵。");
+
+            var m_rows = matrix.Transpose().Vectors.ToArray();
+
+            var iMatrix = Matrix<T>.GetIdentity(matrix.VectorCount);
+            var i_rows = iMatrix.Vectors.ToArray();
+            bool bResult = false;
+            try
+            {
+                for (int i = 0; i < iMatrix.VectorDimension; i++)
+                {
+                    var rowHeader = m_rows[i][i];
+                    if (rowHeader == T.Zero)
+                        return bResult = false;
+                    m_rows[i] /= rowHeader;
+                    i_rows[i] /= rowHeader;
+                    for (int i2 = 0; i2 < iMatrix.VectorDimension; i2++)
+                    {
+                        if (i2 == i || m_rows[i2][i] == T.Zero) continue;
+                        var rowHeader2 = m_rows[i2][i];
+                        m_rows[i2] -= m_rows[i] * rowHeader2;
+                        i_rows[i2] -= i_rows[i] * rowHeader2; ;
+                    }
+                }
+                return bResult = true;
+            }
+            finally
+            {
+                if (bResult) result = new Matrix<T>(i_rows).Transpose();
+                else result = Matrix<T>.GetZero(matrix.VectorCount);
+            }
         }
 
         public static Matrix<T> EasyAdd<T>(this Matrix<T> matrix, T scalar) where T : INumberBase<T>

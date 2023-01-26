@@ -27,6 +27,7 @@ namespace MatrixLibrary
         public Vector<T> this[int index] { get => new(values[(index * vectorDimension)..(index * vectorDimension + vectorDimension)]); }
         public ref T this[int row, int col] { get => ref values[col * vectorDimension + row]; }
 
+        public int VectorDimension { get => vectorDimension; }
         public int VectorCount { get => vectorCount; }
 
         public Matrix(params Vector<T>[] vectors)
@@ -45,9 +46,56 @@ namespace MatrixLibrary
                 Array.Copy(vectors[i].Values.ToArray(), 0, values, i * dimension, dimension);
         }
 
+        public Matrix(int vectorDimension, int vectorCount)
+        {
+            this.vectorDimension = vectorDimension;
+            this.vectorCount = vectorCount;
+            values = new T[vectorDimension * vectorCount];
+        }
+
+        public Matrix(T[,] array)
+        {
+            vectorDimension = array.GetLength(0);
+            vectorCount = array.GetLength(1);
+            values = new T[vectorDimension * vectorCount];
+            for (int j = 0; j < vectorCount; j++)
+            {
+                for (int i = 0; i < vectorDimension; i++)
+                {
+                    values[vectorDimension * j + i] = array[i, j];
+                }
+            }
+        }
+
         public override string ToString()
         {
+            return ToStringByRow();
+        }
+
+        public string ToStringByColumn()
+        {
             return $"[ {string.Join(", ", Vectors)} ]";
+        }
+
+        public string ToStringByRow()
+        {
+            StringBuilder sb = new();
+            sb.Append("{ ");
+            for (int i = 0; i < vectorDimension; i++)
+            {
+                sb.Append("{ ");
+                for (int j = 0; j < vectorCount; j++)
+                {
+                    sb.Append(values[j * vectorDimension + i]);
+                    sb.Append(", ");
+                }
+                sb.Length -= 2;
+                sb.Append(" } ");
+            }
+            sb.Length -= 1;
+            sb.Append(" }");
+
+            return sb.ToString();
         }
     }
 }
