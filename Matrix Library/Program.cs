@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Vector2i = MatrixLibrary.Vector2<int>;
 
 
 namespace MatrixLibrary
 {
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            Matrix<int> m1 = new((1, 3), (2, 4));
-            Matrix<int> m2 = new((6, 8), (7, 9));
-
-            Console.WriteLine(m1);
-            Console.WriteLine(m2);
-            Console.WriteLine(m1 * m2);
+            Matrix<float> m = new((1, 2, 5), (4, 6, 7), (3, 8, 9));
+            Console.WriteLine(m);
+            if(!m.Invert(out var vm))
+            {
+                Console.WriteLine("Invert false");
+                return;
+            }
+            Console.WriteLine(vm);
+            Console.WriteLine(m.Cross(vm));
         }
     }
 }

@@ -31,11 +31,11 @@ namespace MatrixLibrary
 
         public static T Dot<T>(this Vector<T> vector1, Vector<T> vector2) where T : INumberBase<T>
         {
-            if (vector1.Dimension != vector2.Dimension)
+            if (vector1.Length != vector2.Length)
                 throw new ArgumentException($"{nameof(vector1)}与{nameof(vector2)}的维度必须相等。");
 
             T sum = T.Zero;
-            for (int i = 0; i < vector1.Dimension; i++)
+            for (int i = 0; i < vector1.Length; i++)
             {
                 sum += vector1[i] * vector2[i];
             }
@@ -56,11 +56,11 @@ namespace MatrixLibrary
 
         public static Vector<T> EasyMul<T>(this Vector<T> vector1, Vector<T> vector2) where T : INumberBase<T>
         {
-            if (vector1.Dimension != vector2.Dimension)
+            if (vector1.Length != vector2.Length)
                 throw new ArgumentException($"{nameof(vector1)}与{nameof(vector2)}的维度必须相等。");
 
             var newValue = vector1.Values.ToArray();
-            for (int i = 0; i < vector1.Dimension; i++)
+            for (int i = 0; i < vector1.Length; i++)
             {
                 newValue[i] *= vector2[i];
             }

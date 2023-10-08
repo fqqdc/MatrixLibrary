@@ -11,12 +11,12 @@ namespace MatrixLibrary
         private T[] values;
         public IEnumerable<T> Values
         {
-            get => values;
+            get => values.AsEnumerable();
         }
 
         public ref T this[int index] { get => ref values[index]; }
 
-        public int Dimension { get => values.Length; }
+        public int Length { get => values.Length; }
 
         public Vector(params T[] values)
         {

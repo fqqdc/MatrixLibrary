@@ -32,7 +32,7 @@ namespace MatrixLibrary
 
         public static Vector<T> operator +(Vector<T> vector1, Vector<T> vector2)
         {
-            if (vector1.Dimension != vector2.Dimension)
+            if (vector1.Length != vector2.Length)
                 throw new ArgumentException($"{nameof(vector1)}与{nameof(vector2)}的维度必须相等。");
 
             int size = vector1.values.Length;

@@ -9,10 +9,10 @@ namespace MatrixLibrary
     {
         public static Matrix<T> Transpose<T>(this Matrix<T> matrix) where T : INumberBase<T>
         {
-            Matrix<T> result = new(matrix.VectorCount, matrix.VectorDimension);
+            Matrix<T> result = new(matrix.VectorCount, matrix.VectorLength);
             for (int y = 0; y < matrix.VectorCount; y++)
             {
-                for (int x = 0; x < matrix.VectorDimension; x++)
+                for (int x = 0; x < matrix.VectorLength; x++)
                 {
                     result[y, x] = matrix[x, y];
                 }
@@ -20,9 +20,9 @@ namespace MatrixLibrary
             return result;
         }
 
-        public static bool Invert<T>(this Matrix<T> matrix, out Matrix<T> result) where T : INumberBase<T>
+        public static bool Invert<T>(this Matrix<T> matrix, out Matrix<T> result) where T : IFloatingPointIeee754<T>
         {
-            if (matrix.VectorCount != matrix.VectorDimension)
+            if (matrix.VectorCount != matrix.VectorLength)
                 throw new ArgumentException($"{nameof(matrix)}矩阵不是方阵。");
 
             var m_rows = matrix.Transpose().Vectors.ToArray();
@@ -32,14 +32,14 @@ namespace MatrixLibrary
             bool bResult = false;
             try
             {
-                for (int i = 0; i < iMatrix.VectorDimension; i++)
+                for (int i = 0; i < iMatrix.VectorLength; i++)
                 {
                     var rowHeader = m_rows[i][i];
                     if (rowHeader == T.Zero)
                         return bResult = false;
                     m_rows[i] /= rowHeader;
                     i_rows[i] /= rowHeader;
-                    for (int i2 = 0; i2 < iMatrix.VectorDimension; i2++)
+                    for (int i2 = 0; i2 < iMatrix.VectorLength; i2++)
                     {
                         if (i2 == i || m_rows[i2][i] == T.Zero) continue;
                         var rowHeader2 = m_rows[i2][i];
@@ -69,8 +69,8 @@ namespace MatrixLibrary
 
         public static Matrix<T> EasyAdd<T>(this Matrix<T> matrix, Vector<T> vector) where T : INumberBase<T>
         {
-            if (matrix[0].Dimension != vector.Dimension)
-                throw new ArgumentException($"{nameof(matrix)}矩阵中的向量维度({matrix[0].Dimension})与{nameof(vector)}向量维度({vector.Dimension})不一致。");
+            if (matrix[0].Length != vector.Length)
+                throw new ArgumentException($"{nameof(matrix)}矩阵中的向量维度({matrix[0].Length})与{nameof(vector)}向量维度({vector.Length})不一致。");
 
             var newValue = matrix.Vectors.ToArray();
             for (int i = 0; i < newValue.Length; i++)
@@ -83,8 +83,8 @@ namespace MatrixLibrary
 
         public static Matrix<T> EasyMul<T>(this Matrix<T> matrix, Vector<T> vector) where T : INumberBase<T>
         {
-            if (matrix[0].Dimension != vector.Dimension)
-                throw new ArgumentException($"{nameof(matrix)}矩阵中的向量维度({matrix[0].Dimension})与{nameof(vector)}向量维度({vector.Dimension})不一致。");
+            if (matrix[0].Length != vector.Length)
+                throw new ArgumentException($"{nameof(matrix)}矩阵中的向量维度({matrix[0].Length})与{nameof(vector)}向量维度({vector.Length})不一致。");
 
             var newValue = matrix.Vectors.ToArray();
             for (int i = 0; i < newValue.Length; i++)

@@ -20,10 +20,35 @@ namespace MatrixLibrary
             return new Matrix<T>(vectors);
         }
 
-        public static Matrix<T> operator *(Matrix<T> matrix1, Matrix<T> matrix2)
+        public Matrix<T> Dot(Matrix<T> matrix2)
         {
-            var m1row = matrix1[0].Dimension; //矩阵1中的向量维度
-            var m2row = matrix2[0].Dimension; //矩阵2中的向量维度
+            Matrix<T> matrix1 = this;
+
+            if (matrix1.VectorLength != matrix2.VectorLength)
+                throw new ArgumentException($"{nameof(matrix1)}矩阵行数({matrix1.VectorLength})与{nameof(matrix2)}矩阵行数({matrix2.VectorLength})不一致。");
+            if (matrix1.VectorCount != matrix2.VectorCount)
+                throw new ArgumentException($"{nameof(matrix1)}矩阵列数({matrix1.VectorCount})与{nameof(matrix2)}矩阵列数({matrix2.VectorCount})不一致。");
+
+
+            Matrix<T> resultMatrix = new(matrix1.VectorLength, matrix1.VectorCount);
+
+            for (int j = 0; j < resultMatrix.VectorCount; j++)
+            {
+                for (int i = 0; i < resultMatrix.VectorLength; i++)
+                {
+                    resultMatrix[i, j] = matrix1[i, j] * matrix2[i, j];
+                }
+            }
+
+            return resultMatrix;
+        }
+
+        public Matrix<T> Cross(Matrix<T> matrix2)
+        {
+            Matrix<T> matrix1 = this;
+
+            var m1row = matrix1[0].Length; //矩阵1中的向量维度
+            var m2row = matrix2[0].Length; //矩阵2中的向量维度
 
             if (matrix1.VectorCount != m2row)
                 throw new ArgumentException($"{nameof(matrix1)}矩阵列数({matrix1.VectorCount})与{nameof(matrix2)}矩阵行数({m2row})不一致。");
@@ -52,11 +77,11 @@ namespace MatrixLibrary
         {
             int m1row = 0; //矩阵1中的向量维度
             if (matrix1.VectorCount != 0)
-                m1row = matrix1[0].Dimension;
+                m1row = matrix1[0].Length;
 
             int m2row = 0; //矩阵2中的向量维度
             if (matrix2.VectorCount != 0)
-                m2row = matrix2[0].Dimension;
+                m2row = matrix2[0].Length;
 
             if (m1row != m2row || matrix1.VectorCount != matrix2.VectorCount)
                 throw new ArgumentException($"{nameof(matrix1)}矩阵与{nameof(matrix2)}矩阵行列数必须相等。");
