@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace MatrixLibrary
 {
@@ -18,6 +19,12 @@ namespace MatrixLibrary
             }
 
             return new Vector<T>(newValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> operator *(T scalar, Vector<T> vector)
+        {
+            return vector * scalar;
         }
         public static Vector<T> operator /(Vector<T> vector, T scalar)
         {

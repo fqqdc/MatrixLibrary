@@ -20,7 +20,12 @@ namespace MatrixLibrary
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetLengthSquared<T>(this Vector<T> vector) where T : IRootFunctions<T>
         {
-            return vector.Dot(vector);
+            T result = T.Zero;
+            for (int i = 0; i < vector.Length; i++)
+            {
+                result += vector[i] * vector[i];
+            }
+            return result;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -42,6 +47,12 @@ namespace MatrixLibrary
 
             return sum;
         }
+
+        public static Vector<T> Projection<T>(this Vector<T> vector1, Vector<T> vector2) where T : INumberBase<T>
+        {
+            return vector1.Dot(vector2) * vector2;
+        }
+
 
         public static Vector<T> EasyAdd<T>(this Vector<T> vector, T scalar) where T : INumberBase<T>
         {

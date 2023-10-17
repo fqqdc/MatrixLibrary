@@ -20,5 +20,10 @@ namespace MatrixLibrary
         {
             return new Vector2<T>(value.Item1, value.Item2);
         }
+
+        public Vector2<T> Cross()
+        {
+            return new(-Y, X);
+        }
     }
 }
